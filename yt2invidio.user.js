@@ -6,9 +6,11 @@
 // @license     CC BY-NC-SA
 // @include     *
 // @exclude     https://invidio.us/*
-// @version     1.0.3
+// @version     1.0.4
 // @run-at      document-idle
 // @grant       unsafeWindow
+// @homepage    https://codeberg.org/izzy/userscripts
+// @updateURL   https://codeberg.org/izzy/userscripts/raw/branch/master/yt2invidio.user.js
 // ==/UserScript==
 
 for(var i = 0; i < document.links.length; i++) {
