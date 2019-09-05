@@ -2,11 +2,11 @@
 // @name        YT2Invidio
 // @namespace   http://projects.izzysoft.de/
 // @author      IzzySoft
-// @description Point YouTube links to Invidio
+// @description Point YouTube links to Invidio -- and Twitter links to Nitter
 // @license     CC BY-NC-SA
 // @include     *
 // @exclude     https://invidio.us/*
-// @version     1.0.4
+// @version     1.1.0
 // @run-at      document-idle
 // @grant       unsafeWindow
 // @homepage    https://codeberg.org/izzy/userscripts
@@ -20,5 +20,8 @@ for(var i = 0; i < document.links.length; i++) {
     elem.href='https://invidio.us'+RegExp.$2;
   } else if (elem.href.match(/(www\.)?youtu.be\/([a-z0-9_-]+)/i)) {
     elem.href='https://invidio.us/watch?v='+RegExp.$2;
+  // Twitter
+  } else if (elem.href.match(/(mobile\.)?twitter\.com\/([^&#]+)/i)) {
+    elem.href='https://nitter.net/'+RegExp.$2;
   }
 }
