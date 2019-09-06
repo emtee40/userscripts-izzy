@@ -4,4 +4,4 @@ If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/sc
 
     {"r":"(invidio\\.us/watch.+?v=|v/)([a-z0-9_-]+)", "s":"https://invidio.us/vi/$2/mqdefault.jpg"}
 
-Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net. Reasoning is the same – and Nitter is to Twitter what Invidi.us is to YouTube.
+Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube.
