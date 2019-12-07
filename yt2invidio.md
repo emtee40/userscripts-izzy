@@ -11,6 +11,7 @@ Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Ni
 If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [here](https://github.com/omarroth/invidious/wiki/Invidious-Instances).
 
 ### Script history:
+* v1.2.1 (2019-12-06): add menu item to open Invidious Wiki page with list of instances
 * v1.2.0 (2019-10-30): rewrite. Now you can set the Invidious instance to be used via menu command, no script edit needed.
 * v1.1.2 (2019-10-07): make it easier to switch to your favorite Invidious instance (just change a single variable); make invidious.snopyta.org the default
 * v1.1.1 (2019-09-06): do not exclude invidio.us but just ignore YT links there instead

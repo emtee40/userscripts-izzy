@@ -5,13 +5,15 @@
 // @description Point YouTube links to Invidio -- and Twitter links to Nitter
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.2.0
+// @version     1.2.1
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @grant       GM_registerMenuCommand
+// @grant       GM_openInTab
+// @grant       GM.openInTab
 // @grant       unsafeWindow
 // @homepageURL https://codeberg.org/izzy/userscripts
 // @downloadURL https://codeberg.org/izzy/userscripts/raw/branch/master/yt2invidio.user.js
@@ -55,4 +57,10 @@ async function setInstance() {
   if (vhost != null) GM.setValue('InvidiousHost',vhost);
 }
 
+// open tab with instance list from Invidious wiki
+function openList() {
+  GM.openInTab('https://github.com/omarroth/invidious/wiki/Invidious-Instances', { active: true, insert: true });
+}
+
 GM_registerMenuCommand('Set Invidious instance',setInstance);
+GM_registerMenuCommand('Show list of known Invidious instances', openList );
