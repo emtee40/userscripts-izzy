@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidio -- and Twitter links to Nitter
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.2.1
+// @version     1.2.2
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -42,7 +42,7 @@ function rewriteLinks(videohost) {
 
     // Twitter
     } else if (elem.href.match(/(mobile\.)?twitter\.com\/([^&#]+)/i)) {
-      elem.href='https://nitter.net/'+RegExp.$2;
+      if (location.hostname != 'nitter.net') elem.href='https://nitter.net/'+RegExp.$2;
     }
   }
 }
