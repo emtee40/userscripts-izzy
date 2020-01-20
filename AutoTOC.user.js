@@ -5,9 +5,12 @@
 // @author       Rune Skaug (greasemonkey@runeskaug.com)
 // @include      http://*
 // @include      https://*
-// @version      1.7.65
+// @version      1.7.66
+// @grant        GM_registerMenuCommand
+// @homepageURL  https://codeberg.org/izzy/userscripts
+// @downloadURL  https://codeberg.org/izzy/userscripts/raw/branch/master/AutoTOC.user.js
 // @released     2005-07-06
-// @updated      2006-12-25
+// @updated      2020-01-20
 // @compatible   Greasemonkey, Opera 8/9
 //
 // Change history (main changes):
@@ -25,7 +28,8 @@
 //     - Flash on select
 // 1.6 - Xpath search replaces treewalker, FF1,1.5,Opera9
 // 1.7 - Minor fixes, screen-only stylesheet
-// 
+// 1.7.66 - integrated my previously separate UserStyle to hide the TOC unless hovered (Izzy)
+//
 // @ujs:category browser: enhancements
 // @ujs:published 2005-07-06 13:03
 // @ujs:modified 2005-07-06 17:31
@@ -35,7 +39,7 @@
 // ==/UserScript==
 
 
-/* 
+/*
  * Creative Commons Attribution License
  * http://creativecommons.org/licenses/by/2.5/
  */
@@ -73,7 +77,8 @@
           '#js-toc select { font: 8pt verdana, sans-serif; margin: 0; margin-left:5px; background: #fff; color: #000; float: left; padding: 0; vertical-align: bottom;}\n'+
           '#js-toc option { font: 8pt verdana, sans-serif; color: #000; }\n'+
           '#js-toc .hideBtn { font: bold 8pt verdana, sans-serif !important; float: left; margin-left: 2px; margin-right: 2px; padding: 1px; border: 1px solid #999; background: #e7e7e7; }\n'+
-          '#js-toc .hideBtn a { color: #333; text-decoration: none; background: transparent;} #js-toc .hideBtn a:hover { color: #333; text-decoration: none; background: transparent;} }'
+          '#js-toc .hideBtn a { color: #333; text-decoration: none; background: transparent;} #js-toc .hideBtn a:hover { color: #333; text-decoration: none; background: transparent;}\n'+
+          '#js-toc:not(:hover) { height: 0px !important; width: 0px !important; -moz-border-radius: 5px !important; background-color: #00f !important; } }'
         );
         // Browser sniff++ - due to rendering bug(s) in FF1.0
         var toc = document.createElement(window.opera||showHide?'tocdiv':'div');
@@ -110,7 +115,7 @@
       }
     }
   };
-  
+
   function autoTOC_toggleDisplay() {
     if (document.getElementById('js-toc')) {
       // toc-bar exists
@@ -128,7 +133,7 @@
       f();
     }
   }
-  
+
   function getHTMLHeadings() {
     function acceptNode(node) {
       if (node.tagName.match(RXmatch)) { if (node.value+''!='') { return NodeFilter.FILTER_ACCEPT; } }
@@ -185,20 +190,20 @@
   }
   function getCookie(cname)
   {
-  	var namesep = cname + "=";
-  	var ca = document.cookie.split(';');
-  	for(var i=0, c; c=ca[i]; i++)
-  	{
-  		c = c.replace(/^\s*|\s*$/g,"");
-  		if (c.indexOf(namesep) == 0) {
-    		return c.substring(namesep.length,c.length);
-  		}
-  	}
-  	return null;
+    var namesep = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0, c; c=ca[i]; i++)
+    {
+        c = c.replace(/^\s*|\s*$/g,"");
+        if (c.indexOf(namesep) == 0) {
+            return c.substring(namesep.length,c.length);
+        }
+    }
+    return null;
   }
   // main()
-  if (!window.opera && addMenuItem) { 
-    GM_registerMenuCommand('AutoTOC: Toggle display', autoTOC_toggleDisplay); 
+  if (!window.opera && addMenuItem) {
+    GM_registerMenuCommand('AutoTOC: Toggle display', autoTOC_toggleDisplay);
   }
   f();
 })();
