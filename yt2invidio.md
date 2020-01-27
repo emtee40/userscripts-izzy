@@ -11,6 +11,7 @@ Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Ni
 If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [here](https://github.com/omarroth/invidious/wiki/Invidious-Instances).
 
 ### Script history:
+* v1.2.3 (2020-01-27): YT: also catch m.youtube.com
 * v1.2.2 (2020-01-17): exempt Twitter links on nitter.net from being rewritten
 * v1.2.1 (2019-12-06): add menu item to open Invidious Wiki page with list of instances
 * v1.2.0 (2019-10-30): rewrite. Now you can set the Invidious instance to be used via menu command, no script edit needed.
