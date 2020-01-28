@@ -48,7 +48,7 @@
           hideDiv.setAttribute('class','hideBtn');
           var hideLink = document.createElement('a');
           hideLink.setAttribute("href","#");
-          hideLink.setAttribute("onclick",useCookie?"document.getElementById('js-toc').style.display = 'none'; document.cookie = 'autotoc_hide=true; path=/'; return false;":"document.getElementById('js-toc').style.display = 'none';");
+          hideLink.addEventListener("click",function(){if(useCookie){document.getElementById('js-toc').style.display='none';document.cookie='autotoc_hide=true; path=/';return false;}else{document.getElementById('js-toc').style.display='none';}});
           hideLink.appendChild(document.createTextNode(hideBtnText));
           hideDiv.appendChild(hideLink);
           toc.appendChild(hideDiv);
@@ -115,10 +115,9 @@
       location.href = '#' + selectEl.value;
       flash(el,5,100);
       if ( resetSelect ) { selectEl.selectedIndex = 0; }
-
     }
   }
-  
+
   function getHTMLHeadings() {
     function acceptNode(node) {
       if (node.tagName.match(RXmatch)) { if (node.value+''!='') { return NodeFilter.FILTER_ACCEPT; } }
