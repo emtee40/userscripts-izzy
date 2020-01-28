@@ -54,7 +54,7 @@
           toc.appendChild(hideDiv);
         }
         tocSelect = document.createElement('select');
-        tocSelect.setAttribute("onchange", "if(this.value){function flash(rep,delay) { for (var i=rep;i>0;i--) {window.setTimeout('el.style.background=\"#ff7\";',delay*i*2);window.setTimeout('el.style.background=elbg',delay*((i*2)+1));};}; elid = this.value; el=document.getElementById(elid); elbg=el.style.background; location.href='#'+elid; flash(5,100);"+(resetSelect?"this.selectedIndex=0;}":"}"));
+        tocSelect.addEventListener("change", function(){gotoAnchor(this)});
         tocSelect.id = 'toc-select';
         tocEmptyOption = document.createElement('option');
         tocEmptyOption.setAttribute('value','');
@@ -102,6 +102,23 @@
     }
   }
 
+  function flash(el,rep,delay) {
+    for (var i=rep;i>0;i--) {
+      window.setTimeout(function(){el.style.background="#ff7";},delay*i*2);
+      window.setTimeout(function(){el.style.background=elbg;},delay*((i*2)+1));
+    }
+  }
+  function gotoAnchor(selectEl) {
+    if(selectEl) {
+      el = document.getElementById(selectEl.value);
+      elbg = el.style.background;
+      location.href = '#' + selectEl.value;
+      flash(el,5,100);
+      if ( resetSelect ) { selectEl.selectedIndex = 0; }
+
+    }
+  }
+  
   function getHTMLHeadings() {
     function acceptNode(node) {
       if (node.tagName.match(RXmatch)) { if (node.value+''!='') { return NodeFilter.FILTER_ACCEPT; } }
