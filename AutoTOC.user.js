@@ -2,47 +2,15 @@
 // @name         AutoTOC
 // @namespace    http://runeskaug.com/greasemonkey
 // @description  Automatically creates a table of contents for all HTML-headers on a web page.
-// @author       Rune Skaug (greasemonkey@runeskaug.com)
+// @author       Rune Skaug (greasemonkey@runeskaug.com), IzzySoft
+// @license      CC BY (https://creativecommons.org/licenses/by/2.5/)
 // @include      http://*
 // @include      https://*
-// @version      1.7.66
+// @version      1.8
 // @grant        GM_registerMenuCommand
 // @homepageURL  https://codeberg.org/izzy/userscripts
 // @downloadURL  https://codeberg.org/izzy/userscripts/raw/branch/master/AutoTOC.user.js
-// @released     2005-07-06
-// @updated      2020-01-20
-// @compatible   Greasemonkey, Opera 8/9
-//
-// Change history (main changes):
-//
-// 1.0 - Basic version
-// 1.1 - Adds Hide TOC button
-// 1.2 - Only show visible headings (Firefox)
-//     - Work around Firefox rendering bugs
-//     - Adds Menu item: AutoTOC: Toggle display (Firefox)
-// 1.3 - Sets a session cookie for TOC hiding (per domain)
-// 1.4 - Disables adding of menu item.
-//     - Choose your own string pattern to match (RXmatch)
-// 1.5 - Minor adjustments for GM 0.6/FF1.5
-//     - Moved closebutton to the left
-//     - Flash on select
-// 1.6 - Xpath search replaces treewalker, FF1,1.5,Opera9
-// 1.7 - Minor fixes, screen-only stylesheet
-// 1.7.66 - integrated my previously separate UserStyle to hide the TOC unless hovered (Izzy)
-//
-// @ujs:category browser: enhancements
-// @ujs:published 2005-07-06 13:03
-// @ujs:modified 2005-07-06 17:31
-// @ujs:documentation http://userjs.org/scripts/browser/enhancements/auto-toc 
-// @ujs:download http://userjs.org/scripts/download/browser/enhancements/auto-toc.user.js 
-// @ujs:download.gm http://userjs.org/scripts/download/browser/enhancements/auto-toc.user.js
 // ==/UserScript==
-
-
-/*
- * Creative Commons Attribution License
- * http://creativecommons.org/licenses/by/2.5/
- */
 
 (function() {
   // text constants
