@@ -6,7 +6,7 @@
 // @license      CC BY (https://creativecommons.org/licenses/by/2.5/)
 // @include      http://*
 // @include      https://*
-// @version      1.8
+// @version      1.9
 // @grant        GM_registerMenuCommand
 // @grant        GM_addStyle
 // @homepageURL  https://codeberg.org/izzy/userscripts
@@ -28,6 +28,14 @@
   var useCookie = true;
   // if true, adds menu item (Toggle TOC)
   var addMenuItem = true;
+  // to check whether loading CSS is blocked by CSP
+  var cssLoaded = false;
+  // CSS definition
+  cssJsToc = 'position: fixed; left: 0; right: 0; top: auto; bottom: 0; width: 100%; display: block; border-top: 1px solid #777; background: #ddd; margin: 0; padding: 3px; z-index: 9999;';
+  cssSelect = 'font: 8pt verdana, sans-serif; margin: 0; margin-left:5px; background: #fff; color: #000; float: left; padding: 0; vertical-align: bottom;';
+  cssOption = 'font: 8pt verdana, sans-serif; color: #000;';
+  cssHideBtn = 'font: bold 8pt verdana, sans-serif !important; float: left; margin-left: 2px; margin-right: 2px; padding: 1px; border: 1px solid #999; background: #e7e7e7;';
+  cssHideLink = 'color: #333; text-decoration: none; background: transparent;} #js-toc .hideBtn a:hover { color: #333; text-decoration: none; background: transparent;';
 
   function f() {
     //only on (X)HTML pages containing at least one heading - excludes XML files, text files, plugins and images (displayed using minimal HTML)
@@ -40,6 +48,21 @@
       if (aHs.length>1) { // HTML document, more than one heading.
         var body = document.getElementsByTagName('body')[0];
         body.style.marginBottom = "24px !important";
+        GM_addStyle('@media print { #js-toc {display: none; visibility: hidden; }}\n'+
+                    '@media screen { #js-toc { '+cssJsToc+' }\n'+
+                    '#js-toc-dummy { display:none; }\n'+
+                    '#js-toc select { '+cssSelect+' }\n'+
+                    '#js-toc option { '+cssOption+' }\n'+
+                    '#js-toc .hideBtn { '+cssHideBtn+' }\n'+
+                    '#js-toc .hideBtn a { '+cssHideLink+' }\n'+
+                    '#js-toc:not(:hover) { height: 2px !important; width: 5px !important; border-radius: 5px !important; background-color: #00f !important; }'
+                   );
+        // check whether our CSS was loaded:
+        var dummy = document.createElement('span');
+        dummy.id = 'js-toc-dummy';
+        document.body.appendChild(dummy);
+        if ( getComputedStyle(document.getElementById('js-toc-dummy')).display == 'none' ) { cssLoaded = true; }
+        dummy.parentNode.removeChild(dummy);
         // Browser sniff++ - due to rendering bug(s) in FF1.0
         var toc = document.createElement(window.opera||showHide?'tocdiv':'div');
         toc.id = 'js-toc';
@@ -50,7 +73,9 @@
           hideLink.setAttribute("href","#");
           hideLink.addEventListener("click",function(){if(useCookie){document.getElementById('js-toc').style.display='none';document.cookie='autotoc_hide=true; path=/';return false;}else{document.getElementById('js-toc').style.display='none';}});
           hideLink.appendChild(document.createTextNode(hideBtnText));
+          if ( !cssLoaded ) hideLink.style = cssHideLink;
           hideDiv.appendChild(hideLink);
+          if ( !cssLoaded ) hideDiv.style = cssHideBtn;
           toc.appendChild(hideDiv);
         }
         tocSelect = document.createElement('select');
@@ -59,8 +84,11 @@
         tocEmptyOption = document.createElement('option');
         tocEmptyOption.setAttribute('value','');
         tocEmptyOption.appendChild(document.createTextNode(fullTOCText));
+        if ( !cssLoaded ) tocEmptyOption.style = cssOption;
         tocSelect.appendChild(tocEmptyOption);
+        if ( !cssLoaded ) tocSelect.style = cssSelect;
         toc.appendChild(tocSelect);
+        if ( !cssLoaded ) toc.style = cssJsToc;
         document.body.appendChild(toc);  
         for (var i=0,aH;aH=aHs[i];i++) {
           if (aH.offsetWidth) {
@@ -68,18 +96,11 @@
             op.appendChild(document.createTextNode(gs(aH.tagName)+getInnerText(aH).substring(0,100)));
             var refID = aH.id ? aH.id : aH.tagName+'-'+(i*1+1);
             op.setAttribute("value", refID);
+            if ( !cssLoaded ) op.style = cssOption;
             document.getElementById("toc-select").appendChild(op);
             aH.id = refID;
           }
         }
-        GM_addStyle('@media print { #js-toc {display: none; visibility: hidden; }}\n'+
-                    '@media screen { #js-toc {position: fixed; left: 0; right: 0; top: auto; bottom: 0; width: 100%; display: block; border-top: 1px solid #777; background: #ddd; margin: 0; padding: 3px; z-index: 9999; }\n'+
-                    '#js-toc select { font: 8pt verdana, sans-serif; margin: 0; margin-left:5px; background: #fff; color: #000; float: left; padding: 0; vertical-align: bottom;}\n'+
-                    '#js-toc option { font: 8pt verdana, sans-serif; color: #000; }\n'+
-                    '#js-toc .hideBtn { font: bold 8pt verdana, sans-serif !important; float: left; margin-left: 2px; margin-right: 2px; padding: 1px; border: 1px solid #999; background: #e7e7e7; }\n'+
-                    '#js-toc .hideBtn a { color: #333; text-decoration: none; background: transparent;} #js-toc .hideBtn a:hover { color: #333; text-decoration: none; background: transparent;}\n'+
-                    '#js-toc:not(:hover) { height: 2px !important; width: 5px !important; border-radius: 5px !important; background-color: #00f !important; }'
-                   );
       }
     }
   };

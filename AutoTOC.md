@@ -6,6 +6,8 @@ This script was originally written by *Rune Skaug* (see: [UserScripts-Mirror](ht
 I use this script for years, and though it was last updated in 2006, it still does a great job: it adds a TOC (table-of-contents) to each page, making long pages much easier to navigate. For the TOC not eating screen space unnecessarily, Rune had implemented a „toggle“ so you could switch it on and off. I decided it was much easier to generally hide the TOC to 95% – leaving just an indicator un-hiding it on mouse over; so I wrote a UserStyle for that purpose and uploaded it to UserStyles.Org ([Hide/unHide AutoTOC navigation bar](https://userstyles.org/styles/22265/hide-unhide-autotoc-navigation-bar)). With that site having become much too bloated, and Rune no longer working on the script (his last update was in 2006, as pointed out already), I've now integrated the CSS directly with the script for your convenience and started improving the script in other regards (see changelog below).
 
 ### History
+* 1.9 (2020-01-29)
+    - adding fallback to „inline styles“ when injection of CSS rules failed. Should now work everywhere (please report with URL if it still fails somewhere)
 * 1.8 (2020-01-28)  
   Making the script work with more sites (having stricter [CSP](https://en.wikipedia.org/wiki/Content_Security_Policy). Note that there are still some left with even stricter rules where AutoTOC doesn't yet work. I'm looking to fix that, but no ETA yet.
     - minor cleanup
