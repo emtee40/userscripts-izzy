@@ -8,9 +8,10 @@ If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/sc
 Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube.
 
 ### How to select your preferred instance?
-If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [here](https://github.com/omarroth/invidious/wiki/Invidious-Instances).
+If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [in the Invidious Wiki](https://github.com/omarroth/invidious/wiki/Invidious-Instances), another one at [instances.invidio.us](https://instances.invidio.us/).
 
 ### Script history:
+* v1.2.4 (2020-02-20): YT: also catch playlist links
 * v1.2.3 (2020-01-27): YT: also catch m.youtube.com
 * v1.2.2 (2020-01-17): exempt Twitter links on nitter.net from being rewritten
 * v1.2.1 (2019-12-06): add menu item to open Invidious Wiki page with list of instances

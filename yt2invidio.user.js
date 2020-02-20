@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidio -- and Twitter links to Nitter
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.2.3
+// @version     1.2.4
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -33,9 +33,9 @@ function rewriteLinks(videohost) {
   for(var i = 0; i < document.links.length; i++) {
     var elem = document.links[i];
 
-    // Youtube: https://www.youtube.com/watch?v=cRRA2xRRgl8 || https://www.youtube.com/channel/dfqwfhqQ34er
+    // Youtube: https://www.youtube.com/watch?v=cRRA2xRRgl8 || https://www.youtube.com/channel/dfqwfhqQ34er || https://www.youtube.com/playlist?list=PLjV3HijScGMynGvjJrvNNd5Q9pPy255dL
     // only rewrite if we're not on Invidious already (too keep the "watch this on YouTube" links intact)
-    if (elem.href.match(/((www|m)\.)?youtube.com(\/watch\?v=[a-z0-9_-]+)/i) || elem.href.match(/((www|m)\.)?youtube.com(\/channel\/[a-z0-9_-]+)/i)) {
+    if (elem.href.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i) || elem.href.match(/((www|m)\.)?youtube.com(\/channel\/[a-z0-9_-]+)/i)) {
       if (location.hostname != videohost) { elem.href='https://'+videohost+RegExp.$3; }
     } else if (elem.href.match(/((www|m)\.)?youtu.be\/([a-z0-9_-]+)/i)) {
       if (location.hostname != videohost) { elem.href='https://'+videohost+'/watch?v='+RegExp.$3; }
