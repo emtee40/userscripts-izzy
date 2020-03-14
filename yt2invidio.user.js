@@ -2,10 +2,10 @@
 // @name        YT2Invidio
 // @namespace   de.izzysoft
 // @author      Izzy
-// @description Point YouTube links to Invidio -- and Twitter links to Nitter
+// @description Point YouTube links to Invidio, Twitter to Nitter, Instagram to Bibliogram
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.2.5
+// @version     1.2.6
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -41,9 +41,10 @@ function rewriteLinks(config) {
   var cfg = JSON.parse(config);
   var videohost = cfg.hosts.invidious;
   var nitterhost = cfg.hosts.nitter;
-  var bibliohost = cfg.hosts.bibliogram;
+  var bibliogramhost = cfg.hosts.bibliogram;
   console.log('Invidious: '+videohost)
   console.log('Nitter: '+nitterhost)
+  console.log('Bibliogram: '+bibliogramhost)
   for(var i = 0; i < document.links.length; i++) {
     var elem = document.links[i];
 
@@ -58,7 +59,19 @@ function rewriteLinks(config) {
     } else if (nitterhost != '' && elem.href.match(/(mobile\.)?twitter\.com\/([^&#]+)/i)) {
       if (location.hostname != nitterhost) elem.href='https://'+nitterhost+'/'+RegExp.$2;
     }
+
+    // Bibliogram
+    else if (elem.href.match(/(www\.)?instagram\.com\/p\/([^&#]+)/i)) { // profile
+      if (location.hostname != bibliogramhost) {
+        elem.href = 'https://'+bibliogramhost+'/p/' + RegExp.$2;
+      }
+    } else if (elem.href.match(/(www\.)?instagram\.com\/([^&#]+)/i)) { // image or video
+      if (location.hostname != bibliogramhost) {
+        elem.href = 'https://'+bibliogramhost+'/u/' + RegExp.$2;
+      }
+    }
   }
+  console.log('Rewrite done.')
 }
 
 
@@ -66,6 +79,7 @@ function rewriteLinks(config) {
 // A list of available instances can be found at
 // https://github.com/omarroth/invidious/wiki/Invidious-Instances
 // https://github.com/zedeus/nitter/wiki/Instances
+// https://github.com/cloudrac3r/bibliogram/wiki/Instances
 async function setInvidiousInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
@@ -75,7 +89,6 @@ async function setInvidiousInstance() {
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
-
 async function setNitterInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
@@ -85,17 +98,31 @@ async function setNitterInstance() {
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
+async function setBibliogramInstance() {
+  let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
+  cfg = JSON.parse(cfgs);
+  var vhost = prompt('Set Bibliogram instance to:', cfg.hosts.bibliogram);
+  if (vhost != null) {
+    cfg.hosts.bibliogram = vhost;
+    GM.setValue('YT2IConfig',JSON.stringify(cfg));
+  }
+}
 
 
-// open tab with instance list from Invidious/Nitter wiki
+// open tab with instance list from Invidious/Nitter/Bibliogram wiki
 function openInvidiousList() {
   GM.openInTab('https://github.com/omarroth/invidious/wiki/Invidious-Instances', { active: true, insert: true });
 }
 function openNitterList() {
   GM.openInTab('https://github.com/zedeus/nitter/wiki/Instances', { active: true, insert: true });
 }
+function openBibliogramList() {
+  GM.openInTab('https://github.com/cloudrac3r/bibliogram/wiki/Instances', { active: true, insert: true });
+}
 
 GM_registerMenuCommand('Set Invidious instance',setInvidiousInstance);
 GM_registerMenuCommand('Show list of known Invidious instances', openInvidiousList );
 GM_registerMenuCommand('Set Nitter instance',setNitterInstance);
 GM_registerMenuCommand('Show list of known Nitter instances', openNitterList );
+GM_registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
+GM_registerMenuCommand('Show list of known Bibliogram instances', openBibliogramList );
