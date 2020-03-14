@@ -5,12 +5,13 @@ If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/sc
 
     {"r":"(invidio\\.us/watch.+?v=|v/)([a-z0-9_-]+)", "s":"https://invidio.us/vi/$2/mqdefault.jpg"}
 
-Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube.
+Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net – and starting with v1.2.6 (2020-03-14) also Instagram links to Bibliogram. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube, etc.
 
 ### How to select your preferred instance?
-If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [in the Invidious Wiki](https://github.com/omarroth/invidious/wiki/Invidious-Instances), another one at [instances.invidio.us](https://instances.invidio.us/). Similarly, the Nitter project has [a list in its wiki](https://github.com/zedeus/nitter/wiki/Instances). The userscript menu offers to open those pages in a new tab, next to the one you currently have focused.
+If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [in the Invidious Wiki](https://github.com/omarroth/invidious/wiki/Invidious-Instances), another one at [instances.invidio.us](https://instances.invidio.us/). Similarly, the Nitter project has [a list in its wiki](https://github.com/zedeus/nitter/wiki/Instances), as [does Bibliogram](https://github.com/cloudrac3r/bibliogram/wiki/Instances). The userscript menu offers to open those pages in a new tab, next to the one you currently have focused.
 
 ### Script history:
+* v1.2.6 (2020-03-14): Add support to rewrite Instagram links to Bibliogram
 * v1.2.5 (2020-03-14): Rewrite to also allow setting Nitter instance. If you switched your Invidious instance, you need to set that again (once) as settings structure changed.
 * v1.2.4 (2020-02-20): YT: also catch playlist links
 * v1.2.3 (2020-01-27): YT: also catch m.youtube.com
