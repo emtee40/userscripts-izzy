@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidio -- and Twitter links to Nitter
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.2.4
+// @version     1.2.5
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -20,16 +20,30 @@
 // @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // ==/UserScript==
 
+// Default Config
+const defaultConfig = {
+  hosts: {invidious: "invidio.us", nitter: "nitter.net", bibliogram: "bibliogram.art"}
+};
+/*
+console.log(defaultConfig.hosts);
+console.log(obj.hosts.hasOwnProperty('bibliogram')); // true
+*/
+
 // Get the Invidious instance to use for rewrite
-GM.getValue('InvidiousHost','invidiou.sh').then(function(result) {
+GM.getValue('YT2IConfig',JSON.stringify(defaultConfig)).then(function(result) {
   rewriteLinks(result);
 });
 
 
 // Do the actual rewrite
-function rewriteLinks(videohost) {
-  console.log(`Using '${videohost}' for rewrite`);
-
+function rewriteLinks(config) {
+  console.log(`Using '${config}' for rewrite`);
+  var cfg = JSON.parse(config);
+  var videohost = cfg.hosts.invidious;
+  var nitterhost = cfg.hosts.nitter;
+  var bibliohost = cfg.hosts.bibliogram;
+  console.log('Invidious: '+videohost)
+  console.log('Nitter: '+nitterhost)
   for(var i = 0; i < document.links.length; i++) {
     var elem = document.links[i];
 
@@ -41,8 +55,8 @@ function rewriteLinks(videohost) {
       if (location.hostname != videohost) { elem.href='https://'+videohost+'/watch?v='+RegExp.$3; }
 
     // Twitter
-    } else if (elem.href.match(/(mobile\.)?twitter\.com\/([^&#]+)/i)) {
-      if (location.hostname != 'nitter.net') elem.href='https://nitter.net/'+RegExp.$2;
+    } else if (nitterhost != '' && elem.href.match(/(mobile\.)?twitter\.com\/([^&#]+)/i)) {
+      if (location.hostname != nitterhost) elem.href='https://nitter.net/'+RegExp.$2;
     }
   }
 }
@@ -51,16 +65,37 @@ function rewriteLinks(videohost) {
 // Give the user the possibility to set a different preferred instance
 // A list of available instances can be found at
 // https://github.com/omarroth/invidious/wiki/Invidious-Instances
-async function setInstance() {
-  let vhost = await GM.getValue('InvidiousHost','invidiou.sh');
-  vhost = prompt('Set Invidious instance to:', vhost);
-  if (vhost != null) GM.setValue('InvidiousHost',vhost);
+// https://github.com/zedeus/nitter/wiki/Instances
+async function setInvidiousInstance() {
+  let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
+  cfg = JSON.parse(cfgs);
+  var vhost = prompt('Set Invidious instance to:', cfg.hosts.invidious);
+  if (vhost != null) {
+    cfg.hosts.invidious = vhost;
+    GM.setValue('YT2IConfig',JSON.stringify(cfg));
+  }
 }
 
-// open tab with instance list from Invidious wiki
-function openList() {
+async function setNitterInstance() {
+  let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
+  cfg = JSON.parse(cfgs);
+  var vhost = prompt('Set Nitter instance to:', cfg.hosts.nitter);
+  if (vhost != null) {
+    cfg.hosts.nitter = vhost;
+    GM.setValue('YT2IConfig',JSON.stringify(cfg));
+  }
+}
+
+
+// open tab with instance list from Invidious/Nitter wiki
+function openInvidiousList() {
   GM.openInTab('https://github.com/omarroth/invidious/wiki/Invidious-Instances', { active: true, insert: true });
 }
+function openNitterList() {
+  GM.openInTab('https://github.com/zedeus/nitter/wiki/Instances', { active: true, insert: true });
+}
 
-GM_registerMenuCommand('Set Invidious instance',setInstance);
-GM_registerMenuCommand('Show list of known Invidious instances', openList );
+GM_registerMenuCommand('Set Invidious instance',setInvidiousInstance);
+GM_registerMenuCommand('Show list of known Invidious instances', openInvidiousList );
+GM_registerMenuCommand('Set Nitter instance',setNitterInstance);
+GM_registerMenuCommand('Show list of known Nitter instances', openNitterList );
