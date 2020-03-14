@@ -56,7 +56,7 @@ function rewriteLinks(config) {
 
     // Twitter
     } else if (nitterhost != '' && elem.href.match(/(mobile\.)?twitter\.com\/([^&#]+)/i)) {
-      if (location.hostname != nitterhost) elem.href='https://nitter.net/'+RegExp.$2;
+      if (location.hostname != nitterhost) elem.href='https://'+nitterhost+'/'+RegExp.$2;
     }
   }
 }
