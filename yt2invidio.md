@@ -11,7 +11,8 @@ Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Ni
 If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [in the Invidious Wiki](https://github.com/omarroth/invidious/wiki/Invidious-Instances), another one at [instances.invidio.us](https://instances.invidio.us/). Similarly, the Nitter project has [a list in its wiki](https://github.com/zedeus/nitter/wiki/Instances), as [does Bibliogram](https://github.com/cloudrac3r/bibliogram/wiki/Instances). The userscript menu offers to open those pages in a new tab, next to the one you currently have focused.
 
 ### Script history:
-* v1.2.6 (2020-03-14): Add support to rewrite Instagram links to Bibliogram
+* v1.3.1 (2020-03-21): Bibliogram doesn't like trailing slashes (fixed)
+* v1.3.0 (2020-03-14): Add support to rewrite Instagram links to Bibliogram
 * v1.2.5 (2020-03-14): Rewrite to also allow setting Nitter instance. If you switched your Invidious instance, you need to set that again (once) as settings structure changed.
 * v1.2.4 (2020-02-20): YT: also catch playlist links
 * v1.2.3 (2020-01-27): YT: also catch m.youtube.com

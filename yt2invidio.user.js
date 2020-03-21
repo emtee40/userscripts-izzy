@@ -2,10 +2,10 @@
 // @name        YT2Invidio
 // @namespace   de.izzysoft
 // @author      Izzy
-// @description Point YouTube links to Invidio, Twitter to Nitter, Instagram to Bibliogram
+// @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.2.6
+// @version     1.3.1
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -61,11 +61,11 @@ function rewriteLinks(config) {
     }
 
     // Bibliogram
-    else if (elem.href.match(/(www\.)?instagram\.com\/p\/([^&#]+)/i)) { // profile
+    else if (elem.href.match(/(www\.)?instagram\.com\/p\/([^&#/]+)/i)) { // profile
       if (location.hostname != bibliogramhost) {
         elem.href = 'https://'+bibliogramhost+'/p/' + RegExp.$2;
       }
-    } else if (elem.href.match(/(www\.)?instagram\.com\/([^&#]+)/i)) { // image or video
+    } else if (elem.href.match(/(www\.)?instagram\.com\/([^&#/]+)/i)) { // image or video
       if (location.hostname != bibliogramhost) {
         elem.href = 'https://'+bibliogramhost+'/u/' + RegExp.$2;
       }
