@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.3.1
+// @version     1.3.2
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -84,8 +84,8 @@ async function setInvidiousInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
   var vhost = prompt('Set Invidious instance to:', cfg.hosts.invidious);
-  if (vhost != null) {
-    cfg.hosts.invidious = vhost;
+  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    cfg.hosts.invidious = RegExp.$2;
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
@@ -93,8 +93,8 @@ async function setNitterInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
   var vhost = prompt('Set Nitter instance to:', cfg.hosts.nitter);
-  if (vhost != null) {
-    cfg.hosts.nitter = vhost;
+  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    cfg.hosts.nitter = RegExp.$2;
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
@@ -102,8 +102,8 @@ async function setBibliogramInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
   var vhost = prompt('Set Bibliogram instance to:', cfg.hosts.bibliogram);
-  if (vhost != null) {
-    cfg.hosts.bibliogram = vhost;
+  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    cfg.hosts.bibliogram = RegExp.$2;
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
