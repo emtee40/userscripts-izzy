@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.3.2
+// @version     1.4.0
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -45,6 +45,8 @@ function rewriteLinks(config) {
   console.log('Invidious: '+videohost)
   console.log('Nitter: '+nitterhost)
   console.log('Bibliogram: '+bibliogramhost)
+  // --=[ document links ]=--
+  console.log('Checking '+document.links.length+' links for YT, Twitter & Insta');
   for(var i = 0; i < document.links.length; i++) {
     var elem = document.links[i];
 
@@ -71,6 +73,28 @@ function rewriteLinks(config) {
       }
     }
   }
+
+  // --=[ embedded links ]=--
+  // based on https://greasyfork.org/en/scripts/394841-youtube-to-invidio-us-embed
+  var src, dataSrc, iframes = document.getElementsByTagName('iframe');
+  console.log('Checking '+iframes.length+' frames for embedded videos');
+  for (var i = 0; i < iframes.length; i++) {
+    src = iframes[i].getAttribute('src');
+    dataSrc = false;
+    if ( src == null ) { src = iframes[i].getAttribute('data-s9e-mediaembed-src'); dataSrc = true; }
+    if ( src == null ) continue;
+    if ( src.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i) || src.match(/((www|m)\.)?youtube.com(\/(channel|embed)\/[a-z0-9_-]+)/i) ) {
+      if ( dataSrc ) {
+        iframes[i].setAttribute('data-s9e-mediaembed-src','https://'+videohost+RegExp.$3);
+      } else {
+        iframes[i].setAttribute('src','https://'+videohost+RegExp.$3);
+      }
+//      iframes[i].setAttribute('style', 'min-height:100%; min-width:100%;');
+      iframes[i].setAttribute('frameborder', '0');
+      iframes[i].setAttribute('allowfullscreen', '1');
+    }
+  }
+
   console.log('Rewrite done.')
 }
 
