@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.4.0
+// @version     1.4.1
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -63,9 +63,9 @@ function rewriteLinks(config) {
     }
 
     // Bibliogram
-    else if (elem.href.match(/(www\.)?instagram\.com\/p\/([^&#/]+)/i)) { // profile
+    else if (elem.href.match(/(www\.)?instagram\.com\/(p|tv)\/([^&#/]+)/i)) { // profile
       if (location.hostname != bibliogramhost) {
-        elem.href = 'https://'+bibliogramhost+'/p/' + RegExp.$2;
+        elem.href = 'https://'+bibliogramhost+'/p/' + RegExp.$3;
       }
     } else if (elem.href.match(/(www\.)?instagram\.com\/([^&#/]+)/i)) { // image or video
       if (location.hostname != bibliogramhost) {
