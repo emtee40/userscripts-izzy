@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.4.1
+// @version     1.4.2
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -22,7 +22,7 @@
 
 // Default Config
 const defaultConfig = {
-  hosts: {invidious: "invidio.us", nitter: "nitter.net", bibliogram: "bibliogram.art"}
+  hosts: {invidious: "invidious.snopyta.org", nitter: "nitter.net", bibliogram: "bibliogram.art"}
 };
 /*
 console.log(defaultConfig.hosts);
