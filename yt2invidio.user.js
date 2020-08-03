@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.4.2
+// @version     1.4.3
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -22,7 +22,8 @@
 
 // Default Config
 const defaultConfig = {
-  hosts: {invidious: "invidious.snopyta.org", nitter: "nitter.net", bibliogram: "bibliogram.art"}
+  hosts: {invidious: "invidious.snopyta.org", nitter: "nitter.net", bibliogram: "bibliogram.art"},
+  invProxy: 0
 };
 /*
 console.log(defaultConfig.hosts);
@@ -42,7 +43,9 @@ function rewriteLinks(config) {
   var videohost = cfg.hosts.invidious;
   var nitterhost = cfg.hosts.nitter;
   var bibliogramhost = cfg.hosts.bibliogram;
-  console.log('Invidious: '+videohost)
+  var invProxy = 'local=0';
+  if ( cfg.invProxy == 1 ) { invProxy = 'local=1'; }
+  console.log('Invidious: '+videohost+', Params: '+invProxy)
   console.log('Nitter: '+nitterhost)
   console.log('Bibliogram: '+bibliogramhost)
   // --=[ document links ]=--
@@ -52,10 +55,12 @@ function rewriteLinks(config) {
 
     // Youtube: https://www.youtube.com/watch?v=cRRA2xRRgl8 || https://www.youtube.com/channel/dfqwfhqQ34er || https://www.youtube.com/playlist?list=PLjV3HijScGMynGvjJrvNNd5Q9pPy255dL
     // only rewrite if we're not on Invidious already (too keep the "watch this on YouTube" links intact)
-    if (elem.href.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i) || elem.href.match(/((www|m)\.)?youtube.com(\/channel\/[a-z0-9_-]+)/i)) {
-      if (location.hostname != videohost) { elem.href='https://'+videohost+RegExp.$3; }
+    if (elem.href.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i)) {
+      if (location.hostname != videohost) { elem.href='https://'+videohost+RegExp.$3+'&'+invProxy; }
     } else if (elem.href.match(/((www|m)\.)?youtu.be\/([a-z0-9_-]+)/i)) {
-      if (location.hostname != videohost) { elem.href='https://'+videohost+'/watch?v='+RegExp.$3; }
+      if (location.hostname != videohost) { elem.href='https://'+videohost+'/watch?v='+RegExp.$3+'?'+invProxy; }
+    } else if (elem.href.match(/((www|m)\.)?youtube.com(\/channel\/[a-z0-9_-]+)/i)) {
+      if (location.hostname != videohost) { elem.href='https://'+videohost+RegExp.$3+'?'+invProxy; }
 
     // Twitter
     } else if (nitterhost != '' && elem.href.match(/(mobile\.)?twitter\.com\/([^&#]+)/i)) {
@@ -77,6 +82,7 @@ function rewriteLinks(config) {
   // --=[ embedded links ]=--
   // based on https://greasyfork.org/en/scripts/394841-youtube-to-invidio-us-embed
   var src, dataSrc, iframes = document.getElementsByTagName('iframe');
+  var embProxy
   console.log('Checking '+iframes.length+' frames for embedded videos');
   for (var i = 0; i < iframes.length; i++) {
     src = iframes[i].getAttribute('src');
@@ -84,10 +90,12 @@ function rewriteLinks(config) {
     if ( src == null ) { src = iframes[i].getAttribute('data-s9e-mediaembed-src'); dataSrc = true; }
     if ( src == null ) continue;
     if ( src.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i) || src.match(/((www|m)\.)?youtube.com(\/(channel|embed)\/[a-z0-9_-]+)/i) ) {
+      if ( RegExp.$4 == 'channel' || RegExp.$4 == 'embed' ) { embProxy = '?'+invProxy; }
+      else { embProxy = '&'+invProxy; }
       if ( dataSrc ) {
-        iframes[i].setAttribute('data-s9e-mediaembed-src','https://'+videohost+RegExp.$3);
+        iframes[i].setAttribute('data-s9e-mediaembed-src','https://'+videohost+RegExp.$3+embProxy);
       } else {
-        iframes[i].setAttribute('src','https://'+videohost+RegExp.$3);
+        iframes[i].setAttribute('src','https://'+videohost+RegExp.$3+embProxy);
       }
 //      iframes[i].setAttribute('style', 'min-height:100%; min-width:100%;');
       iframes[i].setAttribute('frameborder', '0');
@@ -131,6 +139,13 @@ async function setBibliogramInstance() {
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
+async function toggleInvidiousProxy() {
+  let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
+  cfg = JSON.parse(cfgs);
+  if ( cfg.invProxy == 1 ) { cfg.invProxy = 0; console.log('Invidious proxying turned off.'); }
+  else { cfg.invProxy = 1; console.log('Invidious proxying turned on.'); }
+  GM.setValue('YT2IConfig',JSON.stringify(cfg));
+}
 
 
 // open tab with instance list from Invidious/Nitter/Bibliogram wiki
@@ -146,6 +161,7 @@ function openBibliogramList() {
 
 GM_registerMenuCommand('Set Invidious instance',setInvidiousInstance);
 GM_registerMenuCommand('Show list of known Invidious instances', openInvidiousList );
+GM_registerMenuCommand('Toggle Inviduous proxy state', toggleInvidiousProxy);
 GM_registerMenuCommand('Set Nitter instance',setNitterInstance);
 GM_registerMenuCommand('Show list of known Nitter instances', openNitterList );
 GM_registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
