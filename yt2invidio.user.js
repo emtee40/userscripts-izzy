@@ -2,10 +2,10 @@
 // @name        YT2Invidio
 // @namespace   de.izzysoft
 // @author      Izzy
-// @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram
+// @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.4.3
+// @version     1.5.0
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -22,7 +22,7 @@
 
 // Default Config
 const defaultConfig = {
-  hosts: {invidious: "invidious.snopyta.org", nitter: "nitter.net", bibliogram: "bibliogram.art"},
+  hosts: {invidious: "invidious.snopyta.org", nitter: "nitter.net", bibliogram: "bibliogram.art", teddit: "teddit.net"},
   invProxy: 0
 };
 /*
@@ -43,11 +43,13 @@ function rewriteLinks(config) {
   var videohost = cfg.hosts.invidious;
   var nitterhost = cfg.hosts.nitter;
   var bibliogramhost = cfg.hosts.bibliogram;
+  var teddithost = cfg.hosts.teddit
   var invProxy = 'local=0';
   if ( cfg.invProxy == 1 ) { invProxy = 'local=1'; }
   console.log('Invidious: '+videohost+', Params: '+invProxy)
   console.log('Nitter: '+nitterhost)
   console.log('Bibliogram: '+bibliogramhost)
+  console.log('Teddit: '+teddithost)
   // --=[ document links ]=--
   console.log('Checking '+document.links.length+' links for YT, Twitter & Insta');
   for(var i = 0; i < document.links.length; i++) {
@@ -76,6 +78,11 @@ function rewriteLinks(config) {
       if (location.hostname != bibliogramhost) {
         elem.href = 'https://'+bibliogramhost+'/u/' + RegExp.$2;
       }
+    }
+
+    // Teddit
+    else if (elem.href.match(/((www|old)\.)?reddit.com\/(.*)/i)) {
+      if (location.hostname != teddithost) { elem.href = 'https://'+teddithost+'/'+RegExp.$3; }
     }
   }
 
@@ -146,9 +153,17 @@ async function toggleInvidiousProxy() {
   else { cfg.invProxy = 1; console.log('Invidious proxying turned on.'); }
   GM.setValue('YT2IConfig',JSON.stringify(cfg));
 }
+async function setTedditInstance() {
+  let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
+  cfg = JSON.parse(cfgs);
+  var vhost = prompt('Set Teddit instance to:', cfg.hosts.teddit);
+  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    cfg.hosts.teddit = RegExp.$2;
+    GM.setValue('YT2IConfig',JSON.stringify(cfg));
+  }
+}
 
-
-// open tab with instance list from Invidious/Nitter/Bibliogram wiki
+// open tab with instance list from Invidious/Nitter/Bibliogram/Teddit wiki
 function openInvidiousList() {
   GM.openInTab('https://github.com/omarroth/invidious/wiki/Invidious-Instances', { active: true, insert: true });
 }
@@ -158,6 +173,9 @@ function openNitterList() {
 function openBibliogramList() {
   GM.openInTab('https://github.com/cloudrac3r/bibliogram/wiki/Instances', { active: true, insert: true });
 }
+function openTedditList() {
+  GM.openInTab('https://codeberg.org/teddit/teddit', { active: true, insert: true });
+}
 
 GM_registerMenuCommand('Set Invidious instance',setInvidiousInstance);
 GM_registerMenuCommand('Show list of known Invidious instances', openInvidiousList );
@@ -166,3 +184,5 @@ GM_registerMenuCommand('Set Nitter instance',setNitterInstance);
 GM_registerMenuCommand('Show list of known Nitter instances', openNitterList );
 GM_registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
 GM_registerMenuCommand('Show list of known Bibliogram instances', openBibliogramList );
+GM_registerMenuCommand('Set Teddit instance',setTedditInstance);
+GM_registerMenuCommand('Show list of known Teddit instances', openTedditList );

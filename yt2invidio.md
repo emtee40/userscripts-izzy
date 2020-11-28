@@ -5,20 +5,21 @@ If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/sc
 
     {"r":"(invidio\\.us/watch.+?v=|v/)([a-z0-9_-]+)", "s":"https://invidio.us/vi/$2/mqdefault.jpg"}
 
-Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net – and starting with v1.2.6 (2020-03-14) also Instagram links to Bibliogram. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube, etc.
+Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net – and starting with v1.2.6 (2020-03-14) also Instagram links to Bibliogram. Since v1.5.0 (2020-11-28) Reddit links can be rewritten to a Teddit instance. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube, etc.
 
 ### How to select your preferred instance?
 If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [in the Invidious Wiki](https://github.com/omarroth/invidious/wiki/Invidious-Instances), another one at [instances.invidio.us](https://instances.invidio.us/). Similarly, the Nitter project has [a list in its wiki](https://github.com/zedeus/nitter/wiki/Instances), as [does Bibliogram](https://github.com/cloudrac3r/bibliogram/wiki/Instances). The userscript menu offers to open those pages in a new tab, next to the one you currently have focused.
 
 ### Script history:
+* v1.5.0 (2020-11-28): add support to rewrite Reddit links to Teddit
 * v1.4.3 (2020-08-04): added option to toggle Invidious proxy state
 * v1.4.2 (2020-08-03): switching Inviduous default instance to invidious.snopyta.org as invidio.us is shutting down soon
 * v1.4.1 (2020-04-23): Insta2Biblio: honor "/tv/" links
 * v1.4.0 (2020-04-16): added support for embedded (YT) videos
 * v1.3.2 (2020-03-23): setInstance: filtering hostname from input values (when user e.g. adds a full url instead just the hostname)
 * v1.3.1 (2020-03-21): Bibliogram doesn't like trailing slashes (fixed)
-* v1.3.0 (2020-03-14): Add support to rewrite Instagram links to Bibliogram
-* v1.2.5 (2020-03-14): Rewrite to also allow setting Nitter instance. If you switched your Invidious instance, you need to set that again (once) as settings structure changed.
+* v1.3.0 (2020-03-14): add support to rewrite Instagram links to Bibliogram
+* v1.2.5 (2020-03-14): rewrite to also allow setting Nitter instance. If you switched your Invidious instance, you need to set that again (once) as settings structure changed.
 * v1.2.4 (2020-02-20): YT: also catch playlist links
 * v1.2.3 (2020-01-27): YT: also catch m.youtube.com
 * v1.2.2 (2020-01-17): exempt Twitter links on nitter.net from being rewritten
