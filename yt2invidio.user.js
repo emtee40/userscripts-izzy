@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.5.0
+// @version     1.5.1
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -43,13 +43,13 @@ function rewriteLinks(config) {
   var videohost = cfg.hosts.invidious;
   var nitterhost = cfg.hosts.nitter;
   var bibliogramhost = cfg.hosts.bibliogram;
-  var teddithost = cfg.hosts.teddit
+  var teddithost = cfg.hosts.teddit;
   var invProxy = 'local=0';
   if ( cfg.invProxy == 1 ) { invProxy = 'local=1'; }
-  console.log('Invidious: '+videohost+', Params: '+invProxy)
-  console.log('Nitter: '+nitterhost)
-  console.log('Bibliogram: '+bibliogramhost)
-  console.log('Teddit: '+teddithost)
+  console.log('Invidious: '+videohost+', Params: '+invProxy);
+  console.log('Nitter: '+nitterhost);
+  console.log('Bibliogram: '+bibliogramhost);
+  console.log('Teddit: '+teddithost);
   // --=[ document links ]=--
   console.log('Checking '+document.links.length+' links for YT, Twitter & Insta');
   for(var i = 0; i < document.links.length; i++) {
@@ -57,11 +57,11 @@ function rewriteLinks(config) {
 
     // Youtube: https://www.youtube.com/watch?v=cRRA2xRRgl8 || https://www.youtube.com/channel/dfqwfhqQ34er || https://www.youtube.com/playlist?list=PLjV3HijScGMynGvjJrvNNd5Q9pPy255dL
     // only rewrite if we're not on Invidious already (too keep the "watch this on YouTube" links intact)
-    if (elem.href.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i)) {
+    if (videohost != '' && elem.href.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i)) {
       if (location.hostname != videohost) { elem.href='https://'+videohost+RegExp.$3+'&'+invProxy; }
-    } else if (elem.href.match(/((www|m)\.)?youtu.be\/([a-z0-9_-]+)/i)) {
+    } else if (videohost != '' && elem.href.match(/((www|m)\.)?youtu.be\/([a-z0-9_-]+)/i)) {
       if (location.hostname != videohost) { elem.href='https://'+videohost+'/watch?v='+RegExp.$3+'?'+invProxy; }
-    } else if (elem.href.match(/((www|m)\.)?youtube.com(\/channel\/[a-z0-9_-]+)/i)) {
+    } else if (videohost != '' && elem.href.match(/((www|m)\.)?youtube.com(\/channel\/[a-z0-9_-]+)/i)) {
       if (location.hostname != videohost) { elem.href='https://'+videohost+RegExp.$3+'?'+invProxy; }
 
     // Twitter
@@ -70,47 +70,49 @@ function rewriteLinks(config) {
     }
 
     // Bibliogram
-    else if (elem.href.match(/(www\.)?instagram\.com\/(p|tv)\/([^&#/]+)/i)) { // profile
+    else if (bibliogramhost != '' && elem.href.match(/(www\.)?instagram\.com\/(p|tv)\/([^&#/]+)/i)) { // profile
       if (location.hostname != bibliogramhost) {
         elem.href = 'https://'+bibliogramhost+'/p/' + RegExp.$3;
       }
-    } else if (elem.href.match(/(www\.)?instagram\.com\/([^&#/]+)/i)) { // image or video
+    } else if (bibliogramhost != '' && elem.href.match(/(www\.)?instagram\.com\/([^&#/]+)/i)) { // image or video
       if (location.hostname != bibliogramhost) {
         elem.href = 'https://'+bibliogramhost+'/u/' + RegExp.$2;
       }
     }
 
     // Teddit
-    else if (elem.href.match(/((www|old)\.)?reddit.com\/(.*)/i)) {
+    else if (teddithost != '' && elem.href.match(/((www|old)\.)?reddit.com\/(.*)/i)) {
       if (location.hostname != teddithost) { elem.href = 'https://'+teddithost+'/'+RegExp.$3; }
     }
   }
 
   // --=[ embedded links ]=--
   // based on https://greasyfork.org/en/scripts/394841-youtube-to-invidio-us-embed
-  var src, dataSrc, iframes = document.getElementsByTagName('iframe');
-  var embProxy
-  console.log('Checking '+iframes.length+' frames for embedded videos');
-  for (var i = 0; i < iframes.length; i++) {
-    src = iframes[i].getAttribute('src');
-    dataSrc = false;
-    if ( src == null ) { src = iframes[i].getAttribute('data-s9e-mediaembed-src'); dataSrc = true; }
-    if ( src == null ) continue;
-    if ( src.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i) || src.match(/((www|m)\.)?youtube.com(\/(channel|embed)\/[a-z0-9_-]+)/i) ) {
-      if ( RegExp.$4 == 'channel' || RegExp.$4 == 'embed' ) { embProxy = '?'+invProxy; }
-      else { embProxy = '&'+invProxy; }
-      if ( dataSrc ) {
-        iframes[i].setAttribute('data-s9e-mediaembed-src','https://'+videohost+RegExp.$3+embProxy);
-      } else {
-        iframes[i].setAttribute('src','https://'+videohost+RegExp.$3+embProxy);
-      }
+  if (videohost != '')  {
+    var src, dataSrc, iframes = document.getElementsByTagName('iframe');
+    var embProxy
+    console.log('Checking '+iframes.length+' frames for embedded videos');
+    for (var i = 0; i < iframes.length; i++) {
+      src = iframes[i].getAttribute('src');
+      dataSrc = false;
+      if ( src == null ) { src = iframes[i].getAttribute('data-s9e-mediaembed-src'); dataSrc = true; }
+      if ( src == null ) continue;
+      if ( src.match(/((www|m)\.)?youtube.com(\/(watch\?v|playlist\?list)=[a-z0-9_-]+)/i) || src.match(/((www|m)\.)?youtube.com(\/(channel|embed)\/[a-z0-9_-]+)/i) ) {
+        if ( RegExp.$4 == 'channel' || RegExp.$4 == 'embed' ) { embProxy = '?'+invProxy; }
+        else { embProxy = '&'+invProxy; }
+        if ( dataSrc ) {
+          iframes[i].setAttribute('data-s9e-mediaembed-src','https://'+videohost+RegExp.$3+embProxy);
+        } else {
+          iframes[i].setAttribute('src','https://'+videohost+RegExp.$3+embProxy);
+        }
 //      iframes[i].setAttribute('style', 'min-height:100%; min-width:100%;');
-      iframes[i].setAttribute('frameborder', '0');
-      iframes[i].setAttribute('allowfullscreen', '1');
+        iframes[i].setAttribute('frameborder', '0');
+        iframes[i].setAttribute('allowfullscreen', '1');
+      }
     }
   }
 
-  console.log('Rewrite done.')
+  console.log('Rewrite done.');
 }
 
 
@@ -123,8 +125,9 @@ async function setInvidiousInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
   var vhost = prompt('Set Invidious instance to:', cfg.hosts.invidious);
-  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
-    cfg.hosts.invidious = RegExp.$2;
+  if ( vhost == '' || vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    if ( vhost == '' ) { cfg.hosts.invidious = ''; }
+    else { cfg.hosts.invidious = RegExp.$2; }
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
@@ -132,8 +135,9 @@ async function setNitterInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
   var vhost = prompt('Set Nitter instance to:', cfg.hosts.nitter);
-  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
-    cfg.hosts.nitter = RegExp.$2;
+  if ( vhost == '' || vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    if ( vhost == '' ) { cfg.hosts.nitter = ''; }
+    else { cfg.hosts.nitter = RegExp.$2; }
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
@@ -141,8 +145,9 @@ async function setBibliogramInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
   var vhost = prompt('Set Bibliogram instance to:', cfg.hosts.bibliogram);
-  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
-    cfg.hosts.bibliogram = RegExp.$2;
+  if ( vhost == '' || vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    if ( vhost == '' ) { cfg.hosts.bibliogram = ''; }
+    else { cfg.hosts.bibliogram = RegExp.$2; }
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
@@ -157,8 +162,9 @@ async function setTedditInstance() {
   let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
   cfg = JSON.parse(cfgs);
   var vhost = prompt('Set Teddit instance to:', cfg.hosts.teddit);
-  if ( vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
-    cfg.hosts.teddit = RegExp.$2;
+  if ( vhost == '' || vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    if (vhost=='') { cfg.hosts.teddit = ''; }
+    else { cfg.hosts.teddit = RegExp.$2; }
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }

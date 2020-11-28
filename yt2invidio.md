@@ -3,15 +3,20 @@ For a little more privacy: rewrite YouTube links to point to your favorite Invid
 
 If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/scripts/404-mouseover-popup-image-viewer) (MPIV), here's the rule for the preview image:
 
-    {"r":"(invidio\\.us/watch.+?v=|v/)([a-z0-9_-]+)", "s":"https://invidio.us/vi/$2/mqdefault.jpg"}
+    {"r":"(invidious\\.snopyta\\.org/watch.+?v=|v/)([a-z0-9_-]+)", "s":"https://invidious.snopyta.org/vi/$2/mqdefault.jpg"}
 
 Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net – and starting with v1.2.6 (2020-03-14) also Instagram links to Bibliogram. Since v1.5.0 (2020-11-28) Reddit links can be rewritten to a Teddit instance. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube, etc.
+
 
 ### How to select your preferred instance?
 If you don't like the pre-configured one, you can simply change it via the UserScript menu. A list of instances can be found [in the Invidious Wiki](https://github.com/omarroth/invidious/wiki/Invidious-Instances), another one at [instances.invidio.us](https://instances.invidio.us/). Similarly, the Nitter project has [a list in its wiki](https://github.com/zedeus/nitter/wiki/Instances), as [does Bibliogram](https://github.com/cloudrac3r/bibliogram/wiki/Instances). The userscript menu offers to open those pages in a new tab, next to the one you currently have focused.
 
+If you don't want links for a given service to be rewritten, just set the corresponding instance to an empty string (possible since v1.5.1).
+
+
 ### Script history:
-* v1.5.0 (2020-11-28): add support to rewrite Reddit links to Teddit
+* v1.5.1 (2020-11-28): set instance to empty string to disable link rewrite for given service
+* v1.5.0 (2020-11-28): add support to rewrite Reddit links to Teddit (@ltGuillaume)
 * v1.4.3 (2020-08-04): added option to toggle Invidious proxy state
 * v1.4.2 (2020-08-03): switching Inviduous default instance to invidious.snopyta.org as invidio.us is shutting down soon
 * v1.4.1 (2020-04-23): Insta2Biblio: honor "/tv/" links
