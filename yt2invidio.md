@@ -15,6 +15,7 @@ If you don't want links for a given service to be rewritten, just set the corres
 
 
 ### Script history:
+* v1.5.2 (2020-12-09): added possibility to manually trigger rewrite (to cover eg. dynamically loaded content)
 * v1.5.1 (2020-11-28): set instance to empty string to disable link rewrite for given service
 * v1.5.0 (2020-11-28): add support to rewrite Reddit links to Teddit (@ltGuillaume)
 * v1.4.3 (2020-08-04): added option to toggle Invidious proxy state

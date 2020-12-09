@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.5.1
+// @version     1.5.2
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -31,10 +31,12 @@ console.log(obj.hosts.hasOwnProperty('bibliogram')); // true
 */
 
 // Get the Invidious instance to use for rewrite
-GM.getValue('YT2IConfig',JSON.stringify(defaultConfig)).then(function(result) {
-  rewriteLinks(result);
-});
-
+function doRewrite() {
+  GM.getValue('YT2IConfig',JSON.stringify(defaultConfig)).then(function(result) {
+    rewriteLinks(result);
+  });
+}
+doRewrite;
 
 // Do the actual rewrite
 function rewriteLinks(config) {
@@ -51,7 +53,7 @@ function rewriteLinks(config) {
   console.log('Bibliogram: '+bibliogramhost);
   console.log('Teddit: '+teddithost);
   // --=[ document links ]=--
-  console.log('Checking '+document.links.length+' links for YT, Twitter & Insta');
+  console.log('Checking '+document.links.length+' links for YT, Twitter, Insta, Reddit & Co.');
   for(var i = 0; i < document.links.length; i++) {
     var elem = document.links[i];
 
@@ -84,6 +86,12 @@ function rewriteLinks(config) {
     else if (teddithost != '' && elem.href.match(/((www|old)\.)?reddit.com\/(.*)/i)) {
       if (location.hostname != teddithost) { elem.href = 'https://'+teddithost+'/'+RegExp.$3; }
     }
+
+    // Golem (https://www.golem.de/news/einigung-im-bundestag-freifunk-soll-gemeinnuetzig-werden-2012-152692.html)
+    else if (elem.href.match(/www.golem.de\/.+\-(\d+)\.html/i)) {
+      if (location.hostname != 'www.golem.de') elem.href = 'https://www.golem.de/print.php?a=' + RegExp.$1;
+    }
+    
   }
 
   // --=[ embedded links ]=--
@@ -192,3 +200,5 @@ GM_registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
 GM_registerMenuCommand('Show list of known Bibliogram instances', openBibliogramList );
 GM_registerMenuCommand('Set Teddit instance',setTedditInstance);
 GM_registerMenuCommand('Show list of known Teddit instances', openTedditList );
+
+GM_registerMenuCommand('Rewrite now', doRewrite);
