@@ -15,6 +15,7 @@ If you don't want links for a given service to be rewritten, just set the corres
 
 
 ### Script history:
+* v1.5.3 (2021-05-31): add hotkey (Alt-Y) to manually trigger link rewrite (needed e.g. for pages loading content dynamically via JavaScript), update link to Invidious instances
 * v1.5.2 (2020-12-09): added possibility to manually trigger rewrite (to cover eg. dynamically loaded content)
 * v1.5.1 (2020-11-28): set instance to empty string to disable link rewrite for given service
 * v1.5.0 (2020-11-28): add support to rewrite Reddit links to Teddit (@ltGuillaume)

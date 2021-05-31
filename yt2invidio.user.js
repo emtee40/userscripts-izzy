@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.5.2
+// @version     1.5.3
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -174,7 +174,7 @@ async function setTedditInstance() {
 
 // open tab with instance list from Invidious/Nitter/Bibliogram/Teddit wiki
 function openInvidiousList() {
-  GM.openInTab('https://github.com/omarroth/invidious/wiki/Invidious-Instances', { active: true, insert: true });
+  GM.openInTab('https://github.com/iv-org/documentation/blob/master/Invidious-Instances.md', { active: true, insert: true });
 }
 function openNitterList() {
   GM.openInTab('https://github.com/zedeus/nitter/wiki/Instances', { active: true, insert: true });
