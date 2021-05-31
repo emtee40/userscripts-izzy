@@ -87,11 +87,6 @@ function rewriteLinks(config) {
       if (location.hostname != teddithost) { elem.href = 'https://'+teddithost+'/'+RegExp.$3; }
     }
 
-    // Golem (https://www.golem.de/news/einigung-im-bundestag-freifunk-soll-gemeinnuetzig-werden-2012-152692.html)
-    else if (elem.href.match(/www.golem.de\/.+\-(\d+)\.html/i)) {
-      if (location.hostname != 'www.golem.de') elem.href = 'https://www.golem.de/print.php?a=' + RegExp.$1;
-    }
-    
   }
 
   // --=[ embedded links ]=--
