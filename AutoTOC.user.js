@@ -6,11 +6,14 @@
 // @license      CC BY (https://creativecommons.org/licenses/by/2.5/)
 // @include      http://*
 // @include      https://*
-// @version      1.9
+// @version      1.9.1
 // @grant        GM_registerMenuCommand
+// @grant        GM.registerMenuCommand
 // @grant        GM_addStyle
+// @grant        GM.addStyle
 // @homepageURL  https://codeberg.org/izzy/userscripts
 // @downloadURL  https://codeberg.org/izzy/userscripts/raw/branch/master/AutoTOC.user.js
+// @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // ==/UserScript==
 
 (function() {
@@ -198,7 +201,7 @@
   }
   // main()
   if (!window.opera && addMenuItem) {
-    GM_registerMenuCommand('AutoTOC: Toggle display', autoTOC_toggleDisplay);
+    GM.registerMenuCommand('AutoTOC: Toggle display', autoTOC_toggleDisplay);
   }
   f();
 })();
