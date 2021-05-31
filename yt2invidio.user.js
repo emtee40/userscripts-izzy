@@ -202,3 +202,12 @@ GM_registerMenuCommand('Set Teddit instance',setTedditInstance);
 GM_registerMenuCommand('Show list of known Teddit instances', openTedditList );
 
 GM_registerMenuCommand('Rewrite now', doRewrite);
+
+// register keyboard shortcur Alt+Y to trigger rewrite
+document.onkeyup=function(e) {
+  var e = e || window.event; // for IE to cover IEs window event-object
+  if(e.altKey && e.which == 89) {
+    doRewrite();
+    return false;
+  }
+}
