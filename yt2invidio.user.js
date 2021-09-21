@@ -16,8 +16,8 @@
 // @grant       GM.openInTab
 // @grant       unsafeWindow
 // @homepageURL https://codeberg.org/izzy/userscripts
-// @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // @downloadURL https://codeberg.org/izzy/userscripts/raw/branch/master/yt2invidio.user.js
+// @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
 // ==/UserScript==
 
 // Default Config
