@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.5.3
+// @version     1.5.4
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -16,8 +16,8 @@
 // @grant       GM.openInTab
 // @grant       unsafeWindow
 // @homepageURL https://codeberg.org/izzy/userscripts
-// @downloadURL https://codeberg.org/izzy/userscripts/raw/branch/master/yt2invidio.user.js
 // @require     https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
+// @downloadURL https://codeberg.org/izzy/userscripts/raw/branch/master/yt2invidio.user.js
 // ==/UserScript==
 
 // Default Config
@@ -36,7 +36,7 @@ function doRewrite() {
     rewriteLinks(result);
   });
 }
-doRewrite;
+doRewrite();
 
 // Do the actual rewrite
 function rewriteLinks(config) {
@@ -198,7 +198,7 @@ GM_registerMenuCommand('Show list of known Teddit instances', openTedditList );
 
 GM_registerMenuCommand('Rewrite now', doRewrite);
 
-// register keyboard shortcur Alt+Y to trigger rewrite
+// register keyboard shortcut Alt+Y to trigger rewrite
 document.onkeyup=function(e) {
   var e = e || window.event; // for IE to cover IEs window event-object
   if(e.altKey && e.which == 89) {
