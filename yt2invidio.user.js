@@ -188,7 +188,7 @@ function openTedditList() {
 
 GM_registerMenuCommand('Set Invidious instance',setInvidiousInstance);
 GM_registerMenuCommand('Show list of known Invidious instances', openInvidiousList );
-GM_registerMenuCommand('Toggle Inviduous proxy state', toggleInvidiousProxy);
+GM_registerMenuCommand('Toggle Invidious proxy state', toggleInvidiousProxy);
 GM_registerMenuCommand('Set Nitter instance',setNitterInstance);
 GM_registerMenuCommand('Show list of known Nitter instances', openNitterList );
 GM_registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
