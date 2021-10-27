@@ -2,10 +2,10 @@
 // @name        YT2Invidio
 // @namespace   de.izzysoft
 // @author      Izzy
-// @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit
+// @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit, Medium to Scribe
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.5.4
+// @version     1.6.0
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -22,7 +22,7 @@
 
 // Default Config
 const defaultConfig = {
-  hosts: {invidious: "invidious.snopyta.org", nitter: "nitter.net", bibliogram: "bibliogram.art", teddit: "teddit.net"},
+  hosts: {invidious: "invidious.snopyta.org", nitter: "nitter.net", bibliogram: "bibliogram.art", teddit: "teddit.net", scribe: "scribe.rip"},
   invProxy: 0
 };
 /*
@@ -46,12 +46,14 @@ function rewriteLinks(config) {
   var nitterhost = cfg.hosts.nitter;
   var bibliogramhost = cfg.hosts.bibliogram;
   var teddithost = cfg.hosts.teddit;
+  var scribehost = cfg.hosts.scribe;
   var invProxy = 'local=0';
   if ( cfg.invProxy == 1 ) { invProxy = 'local=1'; }
   console.log('Invidious: '+videohost+', Params: '+invProxy);
   console.log('Nitter: '+nitterhost);
   console.log('Bibliogram: '+bibliogramhost);
   console.log('Teddit: '+teddithost);
+  console.log('Scribe: '+scribehost)
   // --=[ document links ]=--
   console.log('Checking '+document.links.length+' links for YT, Twitter, Insta, Reddit & Co.');
   for(var i = 0; i < document.links.length; i++) {
@@ -85,6 +87,11 @@ function rewriteLinks(config) {
     // Teddit
     else if (teddithost != '' && elem.href.match(/((www|old)\.)?reddit.com\/(.*)/i)) {
       if (location.hostname != teddithost) { elem.href = 'https://'+teddithost+'/'+RegExp.$3; }
+    }
+
+    // Scribe
+    else if (scribehost != '' && elem.href.match(/(www\.)?medium\.com\/([^&#]+)/i)) {
+      if (location.hostname != scribehost) elem.href='https://'+scribehost+'/'+RegExp.$2;
     }
 
   }
@@ -171,6 +178,16 @@ async function setTedditInstance() {
     GM.setValue('YT2IConfig',JSON.stringify(cfg));
   }
 }
+async function setScribeInstance() {
+  let cfgs = await GM.getValue('YT2IConfig',JSON.stringify(defaultConfig));
+  cfg = JSON.parse(cfgs);
+  var vhost = prompt('Set Scribe instance to:', cfg.hosts.scribe);
+  if ( vhost == '' || vhost.match(/^(https?)?:?[\/]*(.+?)(\/.*)?$/) ) {
+    if (vhost=='') { cfg.hosts.scribe = ''; }
+    else { cfg.hosts.scribe = RegExp.$2; }
+    GM.setValue('YT2IConfig',JSON.stringify(cfg));
+  }
+}
 
 // open tab with instance list from Invidious/Nitter/Bibliogram/Teddit wiki
 function openInvidiousList() {
@@ -195,6 +212,7 @@ GM_registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
 GM_registerMenuCommand('Show list of known Bibliogram instances', openBibliogramList );
 GM_registerMenuCommand('Set Teddit instance',setTedditInstance);
 GM_registerMenuCommand('Show list of known Teddit instances', openTedditList );
+GM_registerMenuCommand('Set Scribe instance',setScribeInstance);
 
 GM_registerMenuCommand('Rewrite now', doRewrite);
 
