@@ -46,7 +46,7 @@ function rewriteLinks(config) {
   var nitterhost = cfg.hosts.nitter;
   var bibliogramhost = cfg.hosts.bibliogram;
   var teddithost = cfg.hosts.teddit;
-  var scribehost = cfg.hosts.scribe;
+  var scribehost = cfg.hosts.scribe || 'scribe.rip';
   var invProxy = 'local=0';
   if ( cfg.invProxy == 1 ) { invProxy = 'local=1'; }
   console.log('Invidious: '+videohost+', Params: '+invProxy);
