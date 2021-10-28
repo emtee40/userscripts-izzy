@@ -5,7 +5,7 @@ If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/sc
 
     {"r":"(invidious\\.snopyta\\.org/watch.+?v=|v/)([a-z0-9_-]+)", "s":"https://invidious.snopyta.org/vi/$2/mqdefault.jpg"}
 
-Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net – and starting with v1.2.6 (2020-03-14) also Instagram links to Bibliogram. Since v1.5.0 (2020-11-28) Reddit links can be rewritten to a Teddit instance. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube, etc.
+Additionally, since version 1.1.0 (2019-09-05) also rewrites Twitter links to Nitter.Net – and starting with v1.2.6 (2020-03-14) also Instagram links to Bibliogram. Since v1.5.0 (2020-11-28) Reddit links can be rewritten to a Teddit instance, v1.6.0 added Medium to Scribe. Reasoning is the same – and Nitter is to Twitter what Invidio.us is to YouTube, etc.
 
 
 ### How to select your preferred instance?
@@ -15,6 +15,8 @@ If you don't want links for a given service to be rewritten, just set the corres
 
 
 ### Script history:
+* v1.6.0 (2021-10-28): add support for Medium to Scribe (@dertuxmalwieder)
+* v1.5.4 (2021-09-22): some little fixes
 * v1.5.3 (2021-05-31): add hotkey (Alt-Y) to manually trigger link rewrite (needed e.g. for pages loading content dynamically via JavaScript), update link to Invidious instances
 * v1.5.2 (2020-12-09): added possibility to manually trigger rewrite (to cover eg. dynamically loaded content)
 * v1.5.1 (2020-11-28): set instance to empty string to disable link rewrite for given service
