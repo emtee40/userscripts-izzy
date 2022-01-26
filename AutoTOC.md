@@ -5,6 +5,11 @@ This script was originally written by *Rune Skaug* (see: [UserScripts-Mirror](ht
 
 I use this script for years, and though it was last updated in 2006, it still does a great job: it adds a TOC (table-of-contents) to each page, making long pages much easier to navigate. For the TOC not eating screen space unnecessarily, Rune had implemented a „toggle“ so you could switch it on and off. I decided it was much easier to generally hide the TOC to 95% – leaving just an indicator un-hiding it on mouse over; so I wrote a UserStyle for that purpose and uploaded it to UserStyles.Org ([Hide/unHide AutoTOC navigation bar](https://userstyles.org/styles/22265/hide-unhide-autotoc-navigation-bar)). With that site having become much too bloated, and Rune no longer working on the script (his last update was in 2006, as pointed out already), I've now integrated the CSS directly with the script for your convenience and started improving the script in other regards (see changelog below).
 
+### Note on header levels
+Currently, the script only covers `h1` to `h4` – which is fine with most sites, and I never felt the need for more. I've been asked, though, why not adding `h5` and `h6` as well. The answer is the „drop-up“ would become much too large with some sites.
+
+If you want those two additional levels, it's probably achieved as easy as editing the 3 places in the script and extend them. You see by the history that updates are few (the script works and does what it should, so I hardly feel the need to update), so the danger of collision is quite low. I'd however accept PRs adding this if it's optional – e.g. by having a check-box next to the „drop-up“ which the user can tick – or untick, and which then persists its state until (un)ticked again.
+
 ### History
 * 1.9.1 (2021-02-14)
     - quick fix to make the script work with GreaseMonkey 4.x

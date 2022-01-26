@@ -1,7 +1,7 @@
 ### What does this script do?
 For a little more privacy: rewrite YouTube links to point to your favorite Invidious instance. Details on the „why" can be found [here](https://www.kuketz-blog.de/empfehlungsecke/#youtube).
 
-If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/scripts/404-mouseover-popup-image-viewer) (MPIV), here's the rule for the preview image:
+If you are using the [Mouseover Popup Image Viewer](https://greasyfork.org/de/scripts/404-mouseover-popup-image-viewer) (MPIV), here's an example rule for the preview image:
 
     {"r":"(invidious\\.snopyta\\.org/watch.+?v=|v/)([a-z0-9_-]+)", "s":"https://invidious.snopyta.org/vi/$2/mqdefault.jpg"}
 
@@ -15,6 +15,7 @@ If you don't want links for a given service to be rewritten, just set the corres
 
 
 ### Script history:
+* v1.6.1 (2021-10-29): update links to instance lists of Teddit (anchor) and Bibliogram (moved)
 * v1.6.0 (2021-10-28): add support for Medium to Scribe (@dertuxmalwieder)
 * v1.5.4 (2021-09-22): some little fixes
 * v1.5.3 (2021-05-31): add hotkey (Alt-Y) to manually trigger link rewrite (needed e.g. for pages loading content dynamically via JavaScript), update link to Invidious instances
