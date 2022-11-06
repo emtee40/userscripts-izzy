@@ -5,7 +5,7 @@
 // @license     CC BY-NC-SA
 // @include     *
 // @exclude     *phpmyadmin*
-// @version     11
+// @version     12
 // @grant       unsafeWindow
 // @homepage    https://codeberg.org/izzy/userscripts
 // @updateURL   https://codeberg.org/izzy/userscripts/raw/branch/master/linkuntracker.user.js
@@ -13,9 +13,9 @@
 
 /* badp: we strip parameters starting with that. Some are taken from NetURL, see
    https://github.com/Smile4ever/firefoxaddons/tree/master/Neat%20URL-webext
-   fb_: Facebook; ga_: Google; hmb_: HumbleBundle(?); utm_: Urchin Tracker; wt_: Webtrekk; WT.: Webtrends
+   fb_: Facebook; ga_/_gl: Google; hmb_: HumbleBundle(?); utm_: Urchin Tracker; wt_: Webtrekk; WT.: Webtrends
 */
-var badp = ['fb_','ga_','hmb_','utm_',
+var badp = ['fb_','ga_','_ga','_gl','hmb_','utm_',
             'ei@google.','gws_rd@google.','sei@google.','ved@google.',
             'pd_rd_r@amazon.','pd_rd_w@amazon.','pd_rd_wg@amazon.','psc@amazon.',' _encoding@amazon.',
             'wt_','WT.','yclid','referrer','clickfrom','pf_rd'
@@ -92,10 +92,10 @@ function metager1(elem) {
     var purl = new UrlParams(elem.search);
     elem.href = decodeURIComponent(purl.params['url']);
   } else if ( elem.href.startsWith ('https://metager.de/r/metager')) {
-    if (elem.text.trim().startsWith('http')) {
+    if (elem.text.trim().startsWith('http:') || elem.text.trim().startsWith('https:')) {
       elem.href = decodeURI(elem.text.trim());
-    } else if ( elem.text.trim().startsWith('www.') ) {
-      elem.href = 'http://'+decodeURI(elem.text.trim());
+    } else {
+      elem.href = 'https://'+decodeURI(elem.text.trim());
     }
   }
 }
