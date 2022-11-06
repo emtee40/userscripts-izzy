@@ -5,7 +5,7 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit, Medium to Scribe
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.6.1
+// @version     1.6.2
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
@@ -87,6 +87,9 @@ function rewriteLinks(config) {
     // Teddit
     else if (teddithost != '' && elem.href.match(/((www|old)\.)?reddit.com\/(.*)/i)) {
       if (location.hostname != teddithost) { elem.href = 'https://'+teddithost+'/'+RegExp.$3; }
+    }
+    else if (teddithost != '' && elem.href.match(/(r.nf)\/(.*)/i)) {
+      if (location.hostname != teddithost) { elem.href = 'https://'+teddithost+'/'+RegExp.$2; }
     }
 
     // Scribe

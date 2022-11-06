@@ -15,6 +15,7 @@ If you don't want links for a given service to be rewritten, just set the corres
 
 
 ### Script history:
+* v1.6.2 (2022-11-06): add Reddit short host (r.nf) to be properly recognized for Teddit
 * v1.6.1 (2021-10-29): update links to instance lists of Teddit (anchor) and Bibliogram (moved)
 * v1.6.0 (2021-10-28): add support for Medium to Scribe (@dertuxmalwieder)
 * v1.5.4 (2021-09-22): some little fixes
