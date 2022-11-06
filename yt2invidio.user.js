@@ -5,13 +5,14 @@
 // @description Point YouTube links to Invidious, Twitter to Nitter, Instagram to Bibliogram, Reddit to Teddit, Medium to Scribe
 // @license     CC BY-NC-SA
 // @include     *
-// @version     1.6.2
+// @version     1.6.3
 // @run-at      document-idle
 // @grant       GM.getValue
 // @grant       GM.setValue
 // @grant       GM_getValue
 // @grant       GM_setValue
 // @grant       GM_registerMenuCommand
+// @grant       GM.registerMenuCommand
 // @grant       GM_openInTab
 // @grant       GM.openInTab
 // @grant       unsafeWindow
@@ -206,18 +207,21 @@ function openTedditList() {
   GM.openInTab('https://codeberg.org/teddit/teddit#instances', { active: true, insert: true });
 }
 
-GM_registerMenuCommand('Set Invidious instance',setInvidiousInstance);
-GM_registerMenuCommand('Show list of known Invidious instances', openInvidiousList );
-GM_registerMenuCommand('Toggle Invidious proxy state', toggleInvidiousProxy);
-GM_registerMenuCommand('Set Nitter instance',setNitterInstance);
-GM_registerMenuCommand('Show list of known Nitter instances', openNitterList );
-GM_registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
-GM_registerMenuCommand('Show list of known Bibliogram instances', openBibliogramList );
-GM_registerMenuCommand('Set Teddit instance',setTedditInstance);
-GM_registerMenuCommand('Show list of known Teddit instances', openTedditList );
-GM_registerMenuCommand('Set Scribe instance',setScribeInstance);
+if ( location.href != 'https://duckduckgo.com/post3.html' ) { // somehow this is called from within a search and causes our script to run again
+  GM.registerMenuCommand('Set Invidious instance',setInvidiousInstance);
+  GM.registerMenuCommand('Show list of known Invidious instances', openInvidiousList );
+  GM.registerMenuCommand('Toggle Invidious proxy state', toggleInvidiousProxy);
+  GM.registerMenuCommand('Set Nitter instance',setNitterInstance);
+  GM.registerMenuCommand('Show list of known Nitter instances', openNitterList );
+  GM.registerMenuCommand('Set Bibliogram instance',setBibliogramInstance);
+  GM.registerMenuCommand('Show list of known Bibliogram instances', openBibliogramList );
+  GM.registerMenuCommand('Set Teddit instance',setTedditInstance);
+  GM.registerMenuCommand('Show list of known Teddit instances', openTedditList );
+  GM.registerMenuCommand('Set Scribe instance',setScribeInstance);
 
-GM_registerMenuCommand('Rewrite now', doRewrite);
+  GM.registerMenuCommand('Rewrite now', doRewrite);
+  console.log('registered menus.');
+}
 
 // register keyboard shortcut Alt+Y to trigger rewrite
 document.onkeyup=function(e) {
