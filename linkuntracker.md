@@ -5,5 +5,6 @@ Also part of this script now: an approach to clean up the Google Redirect tracki
 **Note:** JavaScript's `URLSearchParams()` expects parameters to be separated by ampersands ("&"). Some sites use semi-colons (";") instead, in which case `URLSearchParams()` messes up the query-string (replacing several characters by their URL-encoded variant) so it no longer works. To avoid that, this scripts beforehand replaces all semi-colons by ampersands, which works in most cases I've encountered – but might rise issues if a parameter is *supposed to contain an semi-colon* (thought that should be URL-encoded then, it's sometimes forgotten), or some site uses "&amp;" to separate parameters. In those cases, it's best to put that site into your "user excludes". Alternatively, you can also turn off the ";" › "&" conversion inside the script by setting `var replace_semicolon = false;`
 
 ### Script history:
+* v13 (2022-12-22): minor improvements to cleaning up Metager outbound links
 * v12 (2022-11-06): add some more Google tracking parameters
 * v11 (2019-07-27): first public version

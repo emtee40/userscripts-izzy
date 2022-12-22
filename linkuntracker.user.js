@@ -5,7 +5,8 @@
 // @license     CC BY-NC-SA
 // @include     *
 // @exclude     *phpmyadmin*
-// @version     12
+// @version     13
+// @run-at      document-idle
 // @grant       unsafeWindow
 // @homepage    https://codeberg.org/izzy/userscripts
 // @updateURL   https://codeberg.org/izzy/userscripts/raw/branch/master/linkuntracker.user.js
@@ -17,7 +18,7 @@
 */
 var badp = ['fb_','ga_','_ga','_gl','hmb_','utm_',
             'ei@google.','gws_rd@google.','sei@google.','ved@google.',
-            'pd_rd_r@amazon.','pd_rd_w@amazon.','pd_rd_wg@amazon.','psc@amazon.',' _encoding@amazon.',
+            'pd_rd_r@amazon.','pd_rd_w@amazon.','pd_rd_wg@amazon.','psc@amazon.','_encoding@amazon.',
             'wt_','WT.','yclid','referrer','clickfrom','pf_rd'
            ];
 var anch = ''; /* variable to hold the "anchor part" of the URL, if any – i.e. "#anchor" */
@@ -80,17 +81,14 @@ class UrlParams { /* adapted from https://stackoverflow.com/a/45516670 as the bu
   }
 }
 
-/*
-var x = new UrlParams('?foo=bar&john&utm_foo=utm_bar&peter=pan&mary');
-x.filterQuerystring(badp);
-console.log(x.getString());
-*/
-
 // MetaGer.de uses different methods of obfuscation with tracking URLs. This is catching most of them (hopefully):
 function metager1(elem) {
   if ( elem.hostname == 'api.smartredirect.de' ) {
     var purl = new UrlParams(elem.search);
     elem.href = decodeURIComponent(purl.params['url']);
+  } else if ( elem.href.startsWith ('https://metager.de/partner/r')) {
+    var purl = new UrlParams(elem.search);
+    elem.href = decodeURIComponent(purl.params['link']);
   } else if ( elem.href.startsWith ('https://metager.de/r/metager')) {
     if (elem.text.trim().startsWith('http:') || elem.text.trim().startsWith('https:')) {
       elem.href = decodeURI(elem.text.trim());
@@ -104,7 +102,7 @@ function parseLinks(k) {
   for(var i = k; i < document.links.length; i++) { // for some reason stops at 100 loops
     if (i - k > 98) return i;
     var elem = document.links[i];
-    if (window.location.hostname == 'metager.de') { metager1(elem); continue; }
+    if (window.location.hostname == 'metager.de' && elem.className.includes('result-link')) { metager1(elem); continue; }
     if (elem.search == '') continue;
     if (replace_semicolon) var purl = new UrlParams(elem.search.replace(new RegExp(';','g'),'&'));
     else var purl = new UrlParams(elem.search);
