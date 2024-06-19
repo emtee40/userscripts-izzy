@@ -11,6 +11,8 @@ Currently, the script only covers `h1` to `h4` – which is fine with most sites
 If you want those two additional levels, it's probably achieved as easy as editing the 3 places in the script and extend them. You see by the history that updates are few (the script works and does what it should, so I hardly feel the need to update), so the danger of collision is quite low. I'd however accept PRs adding this if it's optional – e.g. by having a check-box next to the „drop-up“ which the user can tick – or untick, and which then persists its state until (un)ticked again.
 
 ### History
+* 1.9.2 (2024-06-20)
+    - make sure script is not run before the page is fully loaded (should make it work again on recent Firefox versions)
 * 1.9.1 (2021-02-14)
     - quick fix to make the script work with GreaseMonkey 4.x
 * 1.9 (2020-01-29)

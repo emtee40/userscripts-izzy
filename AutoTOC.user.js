@@ -6,7 +6,7 @@
 // @license      CC BY (https://creativecommons.org/licenses/by/2.5/)
 // @include      http://*
 // @include      https://*
-// @version      1.9.1
+// @version      1.9.2
 // @grant        GM_registerMenuCommand
 // @grant        GM.registerMenuCommand
 // @grant        GM_addStyle
@@ -14,6 +14,7 @@
 // @homepageURL  https://codeberg.org/izzy/userscripts
 // @downloadURL  https://codeberg.org/izzy/userscripts/raw/branch/master/AutoTOC.user.js
 // @require      https://greasemonkey.github.io/gm4-polyfill/gm4-polyfill.js
+// @run-at       document-idle
 // ==/UserScript==
 
 (function() {
